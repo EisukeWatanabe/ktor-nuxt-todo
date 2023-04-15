@@ -1,5 +1,6 @@
 package com.todo.example
 
+import DatabaseFactory
 import io.ktor.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.tomcat.*
@@ -10,6 +11,8 @@ fun main() {
         .start(wait = true)
 }
 
-fun Application.module() {
+fun Application.module(testing: Boolean = false) {
+
+    DatabaseFactory.init()
     configureRouting()
 }

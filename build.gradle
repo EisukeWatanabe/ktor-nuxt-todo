@@ -18,6 +18,10 @@ dependencies {
     implementation "io.ktor:ktor-server-core:$ktor_version"
     implementation "io.ktor:ktor-server-tomcat:$ktor_version"
     implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation "org.jetbrains.exposed:exposed:0.17.14"
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation "org.postgresql:postgresql:42.3.3"
+    implementation 'org.flywaydb:flyway-core:8.5.1'
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
