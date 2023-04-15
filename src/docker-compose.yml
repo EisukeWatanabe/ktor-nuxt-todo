@@ -10,5 +10,10 @@ services:
       POSTGRES_DB: todo
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
       TZ: "Asia/Tokyo"
-
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
 

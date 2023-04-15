@@ -1,5 +1,6 @@
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.ktor.config.*
 import org.flywaydb.core.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
@@ -7,15 +8,23 @@ import org.jetbrains.exposed.sql.transactions.experimental.*
 object DatabaseFactory {
 
     fun init() {
+
+        val jdbcUrl = "jdbc:postgresql://localhost:5432/todo"
+        val dbUser = "ktoruser"
+        val dbPassword = "ktorpass"
+
         Database.connect(hikari())
-        val flyway = Flyway.configure().dataSource(dbUrl, dbUser, dbPassword).load()
+        val flyway = Flyway.configure().dataSource(jdbcUrl, dbUser, dbPassword).load()
         flyway.migrate()
     }
 
     private fun hikari(): HikariDataSource {
+        val jdbcUrl = "jdbc:postgresql://localhost:5432/todo"
+        val dbUser = "ktoruser"
+        val dbPassword = "ktorpass"
         val config = HikariConfig()
         config.driverClassName = "org.postgresql.Driver"
-        config.jdbcUrl = dbUrl
+        config.jdbcUrl = jdbcUrl
         config.username = dbUser
         config.password = dbPassword
         config.maximumPoolSize=3
