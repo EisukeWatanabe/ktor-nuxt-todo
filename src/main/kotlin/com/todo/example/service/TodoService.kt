@@ -42,6 +42,13 @@ class TodoService {
         }
     }
 
+    suspend fun deleteTodo(id: Int): Todo? {
+        dbQuery {
+            Todos.deleteWhere { Todos.id eq id }
+        }
+        return getTodo(id)
+    }
+
     private fun convertTodo(row: ResultRow): Todo =
         Todo(
             id = row[Todos.id],
