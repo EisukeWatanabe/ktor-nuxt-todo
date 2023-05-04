@@ -33,7 +33,7 @@ jar {
         attributes 'Main-Class': "com.todo.example.ApplicationKt"
     }
     from {
-        configurations.complile.collect() {
+        configurations.compile.collect() {
             it.isDirectory() ? it : zipTree(it)
         }
     }
