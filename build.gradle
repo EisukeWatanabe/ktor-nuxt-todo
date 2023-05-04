@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.20'
     id 'application'
+    id 'org.flywaydb.flyway' version '8.5.1'
 }
 
 group "com.todo.example"
@@ -25,4 +26,39 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:8.5.1'
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "com.todo.example.ApplicationKt"
+    }
+    from {
+        configurations.complile.collect() {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+}
+
+task stage {
+    dependsOn installDist
+}
+
+def JDBC_DATABASE_URL = System.getenv()['JDBC_DATABASE_URL'] == null
+        ? "jdbc:postgresql://localhost:5432/todo"
+        : System.getenv()['JDBC_DATABASE_URL']
+
+def JDBC_DATABASE_USERNAME = System.getenv()['JDBC_DATABASE_USERNAME'] == null
+        ? "ktoruser"
+        : System.getenv(['JDBC_DATABASE_USERNAME'])
+def JDBC_DATABASE_PASSWORD = System.getenv()['JDBC_DATABASE_PASSWORD'] == null
+        ? "ktorpass"
+        : System.getenv()['JDBC_DATABASE_PASSWORD']
+
+flyway {
+    url = JDBC_DATABASE_URL
+    user = JDBC_DATABASE_USERNAME
+    password = JDBC_DATABASE_PASSWORD
+    baselineOnMigrate = true
+    locations = ["filesystem:resources/db/migration"]
 }

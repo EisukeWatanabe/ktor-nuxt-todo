@@ -1,0 +1,8 @@
+{
+  "name": "todo api server with Ktor",
+  "description": "todo application api server.",
+  "image": "heroku/java",
+  "addons": [
+    "heroku-postgrespl"
+  ]
+}
