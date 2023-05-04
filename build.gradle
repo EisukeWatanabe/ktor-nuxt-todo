@@ -44,16 +44,16 @@ task stage {
     dependsOn installDist
 }
 
-def JDBC_DATABASE_URL = System.getenv()['JDBC_DATABASE_URL'] == null
+def JDBC_DATABASE_URL = System.getenv('JDBC_DATABASE_URL') == null
         ? "jdbc:postgresql://localhost:5432/todo"
-        : System.getenv()['JDBC_DATABASE_URL']
+        : System.getenv('JDBC_DATABASE_URL')
 
-def JDBC_DATABASE_USERNAME = System.getenv()['JDBC_DATABASE_USERNAME'] == null
+def JDBC_DATABASE_USERNAME = System.getenv('JDBC_DATABASE_USERNAME') == null
         ? "ktoruser"
-        : System.getenv(['JDBC_DATABASE_USERNAME'])
-def JDBC_DATABASE_PASSWORD = System.getenv()['JDBC_DATABASE_PASSWORD'] == null
+        : System.getenv('JDBC_DATABASE_USERNAME')
+def JDBC_DATABASE_PASSWORD = System.getenv('JDBC_DATABASE_PASSWORD') == null
         ? "ktorpass"
-        : System.getenv()['JDBC_DATABASE_PASSWORD']
+        : System.getenv('JDBC_DATABASE_PASSWORD')
 
 flyway {
     url = JDBC_DATABASE_URL
