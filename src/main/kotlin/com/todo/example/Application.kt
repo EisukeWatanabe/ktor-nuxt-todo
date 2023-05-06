@@ -13,7 +13,8 @@ import io.ktor.server.tomcat.*
 import io.ktor.util.*
 
 fun main() {
-    embeddedServer(Tomcat, port = 8080, host = "0.0.0.0", module = Application::module)
+    val port = System.getenv("PORT")?.toInt() ?: 8080
+    embeddedServer(Tomcat, port, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 
