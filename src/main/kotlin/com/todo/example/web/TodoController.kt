@@ -8,7 +8,12 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 fun Route.todos(todoService: TodoService) {
-    route("todos") {
+    route("api/todos") {
+
+        get("/test") {
+            call.respond(HttpStatusCode.OK, "Test endpoint works")
+        }
+
         get("/") {
             call.respond(todoService.getAllTodos())
         }

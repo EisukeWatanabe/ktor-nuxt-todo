@@ -2,41 +2,34 @@ import com.zaxxer.hikari.*
 import org.flywaydb.core.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
-import java.net.*
 
 object DatabaseFactory {
 
     fun init() {
 
+        val jdbcUrl = "jdbc:postgresql://localhost:5432/todo"
+        val dbUser = "ktoruser"
+        val dbPassword = "ktorpass"
+
         Database.connect(hikari())
-        val flyway = Flyway.configure().dataSource(hikari()).load()
+        val flyway = Flyway.configure().dataSource(jdbcUrl, dbUser, dbPassword).load()
         flyway.migrate()
     }
 
     private fun hikari(): HikariDataSource {
-        val databaseUrl = System.getenv("DATABASE_URL")
-        val dataSourceConfig = createDataSourceConfig(databaseUrl)
-        return HikariDataSource(dataSourceConfig)
-    }
-
-    fun createDataSourceConfig(databaseUrl: String): HikariConfig {
+        val jdbcUrl = "jdbc:postgresql://localhost:5432/todo"
+        val dbUser = "ktoruser"
+        val dbPassword = "ktorpass"
         val config = HikariConfig()
-        val dbUri = URI(databaseUrl)
-
-        val username = dbUri.userInfo.split(":")[0]
-        val password = dbUri.userInfo.split(":")[1]
-        val jdbcUrl = "jdbc:postgresql://${dbUri.host}:${dbUri.port}${dbUri.path}?sslmode=require"
-
-        config.jdbcUrl = jdbcUrl
-        config.username = username
-        config.password = password
         config.driverClassName = "org.postgresql.Driver"
+        config.jdbcUrl = jdbcUrl
+        config.username = dbUser
+        config.password = dbPassword
         config.maximumPoolSize = 3
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
         config.validate()
-
-        return config
+        return HikariDataSource(config)
     }
 
     suspend fun <T> dbQuery(
